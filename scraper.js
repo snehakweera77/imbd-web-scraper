@@ -1,7 +1,9 @@
-const fetch = require("node-fetch");
-const cheerio = require("cheerio");
+import fetch from "node-fetch";
+import cheerio from "cheerio";
 const searchUrl = "https://www.imdb.com/find?s=tt&ttype=ft&ref_=fn_ft&q=";
-function searchMovie(searchTerm) {
+
+const searchCache = {};
+export function searchMovie(searchTerm) {
   return fetch(`${searchUrl}${searchTerm}`)
     .then((response) => response.text())
     .then((body) => {
@@ -27,6 +29,3 @@ function searchMovie(searchTerm) {
       return movies;
     });
 }
-module.exports = {
-  searchMovies,
-};

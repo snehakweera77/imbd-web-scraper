@@ -1,24 +1,22 @@
-const express = require("express");
-const scraper = require("./scraper");
-
+import express from "express";
+import { searchMovie } from "./scraper.js";
 const app = express();
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "Scraping is Fun!",
-  });
+  console.log(req);
+  res.send("Scraping is Fun!");
 });
 
 // /search/star wars
 // /search/fight club
 // /search/office space
 app.get("/search/:title", (req, res) => {
-  scraper.searchMovies(req.params.title).then((movies) => {
-    res.json(movies);
+  searchMovie(req.params.title).then((movies) => {
+    res.send(movies);
   });
 });
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 app.listen(port, () => {
   console.log(`Listening on ${port}`);
 });
