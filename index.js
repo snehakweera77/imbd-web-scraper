@@ -1,5 +1,5 @@
 import express from "express";
-import { searchMovie } from "./scraper.js";
+import { searchMovies, getMovie, getTrailer } from "./scraper.js";
 const app = express();
 
 app.get("/", (req, res) => {
@@ -11,11 +11,20 @@ app.get("/", (req, res) => {
 // /search/fight club
 // /search/office space
 app.get("/search/:title", (req, res) => {
-  searchMovie(req.params.title).then((movies) => {
-    res.send(movies);
+  searchMovies(req.params.title).then((movies) => {
+    res.json(movies);
   });
 });
-
+app.get("/movie/:imdbID", async (req, res) => {
+  getMovie(req.params.imdbID).then((movie) => {
+    res.json(movie);
+  });
+});
+app.get("/trailer/:attr", async (req, res) => {
+  await getTrailer(req.params.attr).then(async (url) => {
+    res.send(url);
+  });
+});
 const port = 3000;
 app.listen(port, () => {
   console.log(`Listening on ${port}`);
